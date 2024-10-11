@@ -1,20 +1,19 @@
-# BERRY-AI
 # Berry AI
 
 ## Team Members and Roles
 
-- **Person A (Frontend Developer)**:
-  - Responsible for designing the user interface (HTML/CSS/JS).
-  - Tasks: Building the home page, integrating modals, and handling UI components.
+- **Huzaim (Founder & Frontend Lead, Full-Stack Developer at Deployment)**:
+  - Responsible for leading frontend development and design.
+  - Tasks: Managing the development of `index.html`, `styles.css`, `scripts.js`, and ensuring responsive user interface design.
+  - Involved in full-stack development during deployment, ensuring the smooth integration of front-end and back-end.
 
-- **Person B (Backend Developer)**:
-  - Responsible for setting up the backend server and API routes.
-  - Tasks: Creating RESTful APIs, managing databases, and handling server requests.
+- **Abdul Haadi (Founding Member & Backend Lead, Full-Stack Developer at Deployment)**:
+  - Responsible for leading backend development and architecture.
+  - Tasks: Leading the development of `app.py`, `models.py`, and the creation of API routes in `api_routes.py`. Overseeing API development, database integration, and managing backend operations.
+  - Involved in full-stack development during deployment, ensuring proper interaction between the backend and frontend.
 
-- **Person C (Full-Stack Developer)**:
-  - Responsible for full integration between frontend and backend.
-  - Tasks: Connecting API endpoints with front-end logic, ensuring smooth data flow.
+- **Ayesha Nasseer (Co-Lead & Project Manager - Backend)**:
+  - Co-leading backend development alongside [Your Name].
+  - Tasks: Contributing to `app.py`, `models.py`, and `api_routes.py`, supporting backend development, and managing project timelines, code reviews, and team coordination.
 
-- **Person D (Project Manager)**:
-  - Responsible for overseeing the project and maintaining the GitHub repository.
-  - Tasks: Code review, GitHub management, and writing documentation.
+  
