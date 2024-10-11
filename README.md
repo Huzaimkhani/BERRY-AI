@@ -13,7 +13,7 @@
   - Involved in full-stack development during deployment, ensuring proper interaction between the backend and frontend.
 
 - **Ayesha Nasseer (Co-Lead & Project Manager - Backend)**:
-  - Co-leading backend development alongside [Your Name].
+  - Co-leading backend development alongside  Haadi.
   - Tasks: Contributing to `app.py`, `models.py`, and `api_routes.py`, supporting backend development, and managing project timelines, code reviews, and team coordination.
 
   
