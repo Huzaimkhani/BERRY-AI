@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berry AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+    }
+
+    /* Rounded Header */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 30px;
+      background-color: #fff;
+      border-radius: 50px;
+      margin: 20px 50px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .logo span {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      margin-right: 30px;
+      font-size: 16px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #f45c43, #eb3349);
+      border-radius: 50px;
+      transition: background 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: linear-gradient(135deg, #eb3349, #f45c43);
+    }
+
+    .nav-links a:last-child {
+      margin-right: 0;
+    }
+
+    /* About Section Styling (For Modal) */
+    .about-section h1 {
+      font-size: 36px;
+      font-weight: bold;
+      line-height: 1.2;
+      color: #333;
+    }
+
+    .about-section h1 .highlight {
+      background: linear-gradient(135deg, #f45c43, #eb3349);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .about-section p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    .modal-content {
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+      border-bottom: none;
+    }
+
+    .modal-footer {
+      border-top: none;
+    }
+
+    /* Accordion Styling */
+    .accordion-item {
+      margin-bottom: 10px;
+    }
+
+    .accordion-header {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .accordion-button {
+      background: none;
+      color: #eb3349;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .accordion-button:focus {
+      box-shadow: none;
+    }
+
+    .accordion-button.collapsed {
+      color: #333;
+    }
+
+    .accordion-button::after {
+      background-image: linear-gradient(135deg, #f45c43, #eb3349);
+    }
+
+    /* Body Section Styling */
+    .content-section {
+      display: flex;
+      justify-content: space-between;
+      padding: 50px;
+      margin-top: 20px;
+    }
+
+    .slogan-section {
+      max-width: 600px;
+      padding-top: 80px;
+    }
+
+    .slogan-section h1 {
+      font-size: 48px;
+      font-weight: bold;
+      line-height: 1.2;
+      color: #333;
+    }
+
+    .slogan-section h1 span {
+      background: linear-gradient(135deg, #f45c43, #eb3349);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .slogan-section p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #555;
+      margin-top: 20px;
+    }
+
+    .voice-button {
+      margin-top: 30px;
+      padding: 20px 50px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #f45c43, #eb3349);
+      color: white;
+      font-size: 18px;
+      border: none;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 350px;
+    }
+
+    .voice-button:hover {
+      background: linear-gradient(135deg, #eb3349, #f45c43);
+    }
+
+    .voice-button::before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      margin-right: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .voice-animation {
+      max-width: 600px;
+    }
+
+    .voice-animation img {
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .founder-vision {
+      font-style: italic;
+      border-left: 4px solid #eb3349;
+      padding-left: 20px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .team-member {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .role {
+      font-size: 16px;
+      color: #555;
+    }
+
+    /* Footer Styles */
+    footer {
+      background: linear-gradient(135deg, #ff4b4b, #ff9900);
+      border-radius: 50px;
+      padding: 20px 40px;
+      color: #fff;
+      text-align: center;
+      max-width: 95%;
+      margin: 20px auto;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .footer-left p {
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .footer-right ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-right ul li {
+      margin: 5px 0;
+    }
+
+    .footer-right ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .footer-right ul li a:hover {
+      color: #ffde59;
+    }
+
+    .get-started-button {
+      background: linear-gradient(135deg, #ff7f50, #ff4500);
+      color: white;
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .get-started-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 0px 20px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    footer small {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    footer small a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    footer small a:hover {
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .trusted-supported {
+      margin-top: 10px;
+    }
+
+    .trusted-supported h3 {
+      color: #fff;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .trusted-supported img {
+      height: 70px;
+      margin: 0 15px;
+      vertical-align: middle;
+      border-radius: 15px;
+      transition: transform 0.3s, box-shadow 0.3s ease;
+    }
+
+    .trusted-supported img:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 0px 20px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    .logo-berry {
+      height: 50px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header Section -->
+  <header class="navbar">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/pngberrylogo.png') }}" alt="Image">
+      <span>Berry AI</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#teamModal">Team</a>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#faqModal">FAQs</a>
+    </nav>
+  </header>
+
+  <!-- Content Section -->
+  <div class="content-section">
+    <div class="slogan-section">
+      <h1>Think it, <span>speak it</span>, Berry AI does the rest</h1>
+      <p>Use your voice to write 3x faster in coding assistance and research assistance AI commands by using GPT o-1 reasoning technology.</p>
+      <button class="voice-button" onclick="window.location.href='berry';">
+        Start talking to Berry AI...
+      </button>
+    </div>
+    <div class="voice-animation">
+      <img src="{{ url_for('static', filename='images/body-berry.png') }}" alt="Image">
+    </div>
+  </div>
+
+  <!-- About Modal -->
+  <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aboutModalLabel">About Berry AI</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="about-section">
+            <h1>Building <span class="highlight">voice intelligence</span> that <span class="highlight">understands you</span>.</h1>
+            <p>Berry AI is redefining how users interact with research and coding tasks through voice-driven technology...</p>
+            <p>Our mission is simple: make voice-first experiences intuitive and seamless. Berry AI allows users to dictate their thoughts, enabling faster, more efficient research and coding workflows without the need for typing. Whether it's refining research papers or assisting with coding tasks, Berry AI delivers intelligent, voice-driven support.</p>
+            <p>And this is only the beginning.</p>
+            <p>We’re focused on crafting tools that feel natural and fit effortlessly into daily life—tools that enhance productivity, reduce friction, and feel almost magical in their ease of use.</p>
+            <p>If you're excited about a voice-driven future, we’d love to work with you.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Modal -->
+  <div class="modal fade" id="teamModal" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="teamModalLabel">Our Team</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="founder-vision">
+            <h4>Founder's Vision</h4>
+            <p>At Berry AI, we're revolutionizing how developers and researchers interact with technology by making voice the primary tool for coding and research. Our bold mission: eliminate the need for typing, amplify productivity, and make tech more intuitive than ever. We're not just building a prototype—we're shaping the future of work</p>
+          </div>
+          <div class="team-section">
+            <div class="team-member">Huzaim Khani</div>
+            <div class="role">Founder & Chief Technology Officer (CTO)</div>
+            <div class="team-member">Danielle N. Sloan</div>
+            <div class="role">Co-founder & Chief Operating Officer (COO)</div>
+            <div class="team-member">Abdul Hadi</div>
+            <div class="role">Founding Member & Lead Backend Developer</div>
+            <div class="team-member">Ayesha Naseer</div>
+            <div class="role">Co-lead & Backend Developer</div>
+            <div class="team-member">Yasmin Fatima</div>
+            <div class="role">Professional Designer</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Modal -->
+  <div class="modal fade" id="faqModal" tabindex="-1" aria-labelledby="faqModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="faqModalLabel">FAQs</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="faqHeadingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne">
+                  What is the AI Coding Assistant?
+                </button>
+              </h2>
+              <div id="faqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  The AI Coding Assistant is a robust tool for coding tasks like function writing, algorithm development, and code debugging. It’s designed for developers and tech enthusiasts, offering support for syntax correction, performance optimization, and multi-language coding. This makes it ideal for AI developers and tech professionals looking to streamline their coding workflows.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="faqHeadingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
+                  Can the AI Coding Assistant explain complex code blocks?
+                </button>
+              </h2>
+              <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes! The AI Coding Assistant simplifies complex code explanations by breaking down code blocks into understandable parts, making it a valuable learning tool for programmers and AI developers. This feature is perfect for those seeking to enhance their coding comprehension and sharpen their skills.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="faqHeadingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseFour" aria-expanded="false" aria-controls="faqCollapseFour">
+                  How does the code optimization feature work?
+                </button>
+              </h2>
+              <div id="faqCollapseFour" class="accordion-collapse collapse" aria-labelledby="faqHeadingFour" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  The tool’s code optimization function scans your code for performance improvements. It suggests efficient algorithms, better memory management, and improvements for code readability, essential for developers aiming for fast and efficient applications.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="faqHeadingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseFive" aria-expanded="false" aria-controls="faqCollapseFive">
+                  Can I customize the AI Coding Assistant to fit my workflow?
+                </button>
+              </h2>
+              <div id="faqCollapseFive" class="accordion-collapse collapse" aria-labelledby="faqHeadingFive" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Absolutely! The AI Coding Assistant supports customization for various development environments, enabling users to adjust settings and integrate the tool with their preferred coding platforms like GitHub and JetBrains IDEs. This flexibility is perfect for tech professionals who want a tailored coding assistant.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="faqHeadingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseSix" aria-expanded="false" aria-controls="faqCollapseSix">
+                  Does the AI Coding Assistant support integration with other tools and platforms?
+                </button>
+              </h2>
+              <div id="faqCollapseSix" class="accordion-collapse collapse" aria-labelledby="faqHeadingSix" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes, the assistant integrates seamlessly with widely used development tools like Visual Studio Code and JetBrains IDEs, making it easier for developers to incorporate AI-powered assistance into their existing coding processes.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <h2><img src="{{ url_for('static', filename='images/pngberrylogo.png') }}" class="logo-berry" alt="Berry AI Logo">Berry AI</h2>
+        <p>Think it, speak it, Berry AI does the rest.</p>
+        <button class="get-started-button">Join Our Journey</button>
+      </div>
+      <div class="footer-right">
+        <ul>
+          <li><a href="#">Get Berry AI</a></li>
+          <li><a href="#">Call For Action</a></li>
+          <li><a href="#">Berry AI for Education</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="trusted-supported">
+      <h3>Trusted & Supported by</h3>
+      <img src="{{ url_for('static', filename='images/fractal_ai_converted.webp')}}" alt="Fractal AI">
+      <img src="{{ url_for('static', filename='images/pngberrylogo.png')}}" alt="Berry AI">
+    </div>
+    <small>© Berry AI 2024 | <a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Data Use Policy</a></small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

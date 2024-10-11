@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 800px;
+      padding: 20px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .assistant-button {
+      padding: 15px 40px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #f45c43, #eb3349);
+      color: white;
+      font-size: 18px;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      width: 250px;
+      justify-content: center;
+    }
+
+    .assistant-button:hover {
+      background: linear-gradient(135deg, #eb3349, #f45c43);
+    }
+
+    .assistant-button::before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      margin-right: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .form-group input {
+      flex-grow: 1;
+      padding: 15px;
+      border: 2px solid #eb3349;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .form-group button {
+      padding: 15px;
+      width: 150px;
+      background-color: #eb3349;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .form-group button:hover {
+      background-color: #f45c43;
+    }
+
+    .berry-icon {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .berry-icon.active {
+      transform: scale(1.2);
+    }
+
+    .hold-to-speak {
+      font-size: 14px;
+      font-style: italic;
+      color: #f45c43;
+      margin-top: 5px;
+    }
+
+    /* Enhanced Response Section */
+    .response-section {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #fff;
+      border: 2px solid #eb3349;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-height: 300px; /* Limit the height to allow scrolling */
+      overflow-y: auto; /* Enable scrolling for multiple responses */
+      text-align: left;
+    }
+
+    /* Idle message styling */
+    .gpt-response {
+      color: #999;
+      font-style: italic;
+      margin-top: 10px;
+    }
+
+    /* O-1 Thinking, Analyzing, Crafting Text */
+    .thinking {
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #f45c43, #eb3349);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transition: color 0.3s;
+    }
+
+    .back-button {
+      display: block;
+      margin-top: 20px;
+      color: #eb3349;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-button:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Main Container -->
+  <div class="container" id="home-page">
+    <h1>Select Your Assistant</h1>
+    <div class="btn-group">
+      <!-- Coding Assistance Button -->
+      <button class="assistant-button" onclick="showAssistant('coding')">Coding Assistance</button>
+
+      <!-- Research Assistance Button -->
+      <button class="assistant-button" onclick="showAssistant('research')">Research Assistance</button>
+    </div>
+  </div>
+
+  <!-- Research Assistant Page -->
+  <div class="container hidden" id="research-page">
+    <h2>Research Assistant</h2>
+    <div class="form-group">
+      <div>
+        <!-- <img id="berry-icon-research" src="templates\speakingicon2.png" alt="Berry Icon" class="berry-icon"> -->
+        <img id="berry-icon-research" src="{{ url_for('static', filename='images/speakingicon2.png') }}"" alt="Berry Icon" class="berry-icon">
+        <div class="hold-to-speak">Hold to speak</div>
+      </div>
+
+      <input id="research-input" type="text" placeholder="Type your research query here...">
+      <button id="submit-research">Submit</button>
+    </div>
+
+    <div class="response-section" id="response-research">
+      <p class="thinking" id="status-message-research">Waiting for your command...</p>
+      <div class="gpt-response" id="gpt-response-research">Your response will appear here.</div> <!-- Idle message -->
+    </div>
+
+    <a href="#" class="back-button" onclick="goBack()">Go Back</a>
+  </div>
+
+  <!-- Coding Assistant Page -->
+  <div class="container hidden" id="coding-page">
+    <h2>Coding Assistant</h2>
+    <div class="form-group">
+      <div>
+        <!-- <img id="berry-icon-coding" src="templates\speakingicon2.png" alt="Berry Icon" class="berry-icon"> -->
+        <img id="berry-icon-coding" src="{{ url_for('static', filename='images/speakingicon2.png') }}" alt="Berry Icon" class="berry-icon">
+        <div class="hold-to-speak">CLICK ME</div>
+      </div>
+
+      <input id="coding-input" type="text" placeholder="Type your coding query here...">
+      <button id="submit-coding">Submit</button>
+    </div>
+
+    <div class="response-section" id="response-coding">
+      <p class="thinking" id="status-message-coding">Waiting for your command...</p>
+      <div class="gpt-response" id="gpt-response-coding">Your response will appear here.</div> <!-- Idle message -->
+    </div>
+
+    <a href="#" class="back-button" onclick="goBack()">Go Back</a>
+  </div>
+
+  <script>
+    // Function to toggle between homepage and assistant pages
+    function showAssistant(type) {
+      document.getElementById('home-page').classList.add('hidden');
+      if (type === 'research') {
+        document.getElementById('research-page').classList.remove('hidden');
+      } else if (type === 'coding') {
+        document.getElementById('coding-page').classList.remove('hidden');
+      }
+    }
+
+    function goBack() {
+      document.getElementById('home-page').classList.remove('hidden');
+      document.getElementById('research-page').classList.add('hidden');
+      document.getElementById('coding-page').classList.add('hidden');
+      clearResponse('coding');
+      clearResponse('research');
+    }
+
+    // Function to clear responses when going back
+    function clearResponse(assistantType) {
+      if (assistantType === 'coding') {
+        document.getElementById('coding-input').value = '';
+        document.getElementById('gpt-response-coding').innerHTML = 'Your response will appear here.'; // Reset to idle message
+        document.getElementById('status-message-coding').innerHTML = 'Waiting for your command...';
+        document.getElementById('status-message-coding').style.display = 'block'; // Ensure status message is visible again
+      } else if (assistantType === 'research') {
+        document.getElementById('research-input').value = '';
+        document.getElementById('gpt-response-research').innerHTML = 'Your response will appear here.'; // Reset to idle message
+        document.getElementById('status-message-research').innerHTML = 'Waiting for your command...';
+        document.getElementById('status-message-research').style.display = 'block'; // Ensure status message is visible again
+      }
+    }
+
+    // Function to append new response under the previous one
+    function appendResponse(assistantType, query, response) {
+      let responseDiv;
+      if (assistantType === 'coding') {
+        responseDiv = document.getElementById('gpt-response-coding');
+      } else if (assistantType === 'research') {
+        responseDiv = document.getElementById('gpt-response-research');
+      }
+
+      // Add new response as a block
+      const newResponse = `<p><strong>Prompt:</strong> ${query}</p><p>${response}</p><hr>`;
+      responseDiv.innerHTML += newResponse;
+
+      // Scroll to the bottom after appending the response
+      responseDiv.parentElement.scrollTop = responseDiv.parentElement.scrollHeight;
+    }
+
+    // Function to display "O-1 is thinking, analyzing, crafting..." for each prompt submission
+    function removeO1Messages(assistantType) {
+        if (assistantType === 'coding') {
+        statusDiv = document.getElementById('status-message-coding');
+      } else if (assistantType === 'research') {
+        statusDiv = document.getElementById('status-message-research');
+      }
+      statusDiv.style.display = "none";
+    }
+    function showO1Messages(assistantType) {
+      let statusDiv;
+      if (assistantType === 'coding') {
+        statusDiv = document.getElementById('status-message-coding');
+      } else if (assistantType === 'research') {
+        statusDiv = document.getElementById('status-message-research');
+      }
+
+      statusDiv.style.display = 'block';
+      statusDiv.innerHTML = 'O-1 REASONING IS THINKING...';
+
+      setTimeout(() => {
+        statusDiv.innerHTML = 'O-1 REASONING IS ANALYZING...';
+      }, 2000);
+
+      setTimeout(() => {
+        statusDiv.innerHTML = 'O-1 REASONING IS CRAFTING...';
+      }, 4000);
+
+      // setTimeout(() => {
+      //   statusDiv.style.display = 'none'; // Hide the status once response is given
+      // }, 5000);
+    }
+
+    // Updated function to send query and choice to backend for generating response
+    function sendQueryToBackend(assistantType, query) {
+        showO1Messages(assistantType);
+      fetch('/generate_response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          choice: assistantType,  // Send the type of assistant (coding or research)
+          query: query  // Send the user's query
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        removeO1Messages(assistantType)
+        const response = data.response;
+        appendResponse(assistantType, query, response);
+      })
+      .catch(error => console.error('Error:', error));
+    }
+
+    // Handling Query Submission for Coding (Updated to send choice and query to backend)
+    document.getElementById('submit-coding').addEventListener('click', function () {
+      const query = document.getElementById('coding-input').value;
+      if (query) {
+        document.getElementById('response-coding').style.display = 'block';
+        showO1Messages('coding'); // Show status updates before appending the response
+        setTimeout(() => {
+          sendQueryToBackend('coding', query);  // Call the function to send query and choice
+        }, 5000); // Simulate delay for status updates before showing response
+      }
+    });
+
+    // Handling Query Submission for Research (Updated to send choice and query to backend)
+    document.getElementById('submit-research').addEventListener('click', function () {
+      const query = document.getElementById('research-input').value;
+      if (query) {
+        document.getElementById('response-research').style.display = 'block';
+        showO1Messages('research'); // Show status updates before appending the response
+        setTimeout(() => {
+          sendQueryToBackend('research', query);  // Call the function to send query and choice
+        }, 5000); // Simulate delay for status updates before showing response
+      }
+    });
+
+    // Speech Recognition Setup for Coding and Research
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let isRecordingCoding = false;
+    let isRecordingResearch = false;
+
+    // Coding Assistant Speech Recognition
+    if (SpeechRecognition) {
+      const recognitionCoding = new SpeechRecognition();
+      recognitionCoding.continuous = false;
+      recognitionCoding.interimResults = false;
+      recognitionCoding.lang = 'en-US';
+
+      recognitionCoding.onstart = function () {
+        document.getElementById('berry-icon-coding').classList.add('active');
+      };
+
+      recognitionCoding.onend = function () {
+        document.getElementById('berry-icon-coding').classList.remove('active');
+        isRecordingCoding = false;
+      };
+
+      recognitionCoding.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('coding-input').value = transcript;
+      };
+
+      document.getElementById('berry-icon-coding').addEventListener('click', () => {
+        if (!isRecordingCoding) {
+          recognitionCoding.start();
+          isRecordingCoding = true;
+        } else {
+          recognitionCoding.stop();
+          isRecordingCoding = false;
+        }
+      });
+    }
+
+    // Research Assistant Speech Recognition
+    if (SpeechRecognition) {
+      const recognitionResearch = new SpeechRecognition();
+      recognitionResearch.continuous = false;
+      recognitionResearch.interimResults = false;
+      recognitionResearch.lang = 'en-US';
+
+      recognitionResearch.onstart = function () {
+        document.getElementById('berry-icon-research').classList.add('active');
+      };
+
+      recognitionResearch.onend = function () {
+        document.getElementById('berry-icon-research').classList.remove('active');
+        isRecordingResearch = false;
+      };
+
+      recognitionResearch.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('research-input').value = transcript;
+      };
+
+      document.getElementById('berry-icon-research').addEventListener('click', () => {
+        if (!isRecordingResearch) {
+          recognitionResearch.start();
+          isRecordingResearch = true;
+        } else {
+          recognitionResearch.stop();
+          isRecordingResearch = false;
+        }
+      });
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
